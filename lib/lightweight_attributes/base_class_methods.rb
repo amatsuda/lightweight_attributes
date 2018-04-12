@@ -29,5 +29,16 @@ module LightweightAttributes
       super
       include BaseMethods if attributes_to_define_after_schema_loads.empty?
     end
+
+    #TODO: maybe we need to properly handle other non-nil values
+    private def define_default_attribute(name, value, type, from_user:)
+      super if attributes_to_define_after_schema_loads.any?
+
+      if value.nil? || (value == ActiveRecord::Attributes::ClassMethods.const_get(:NO_DEFAULT_PROVIDED))
+        _default_attributes[name] = nil
+      else
+        super
+      end
+    end
   end
 end
