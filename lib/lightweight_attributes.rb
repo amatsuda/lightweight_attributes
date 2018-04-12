@@ -1,5 +1,6 @@
-require "lightweight_attributes/version"
+# frozen_string_literal: true
 
-module LightweightAttributes
-  # Your code goes here...
-end
+require "lightweight_attributes/version"
+require_relative 'lightweight_attributes/railtie'
+require_relative 'lightweight_attributes/base_class_methods'
+require_relative 'lightweight_attributes/attribute_set'
