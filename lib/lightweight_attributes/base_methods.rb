@@ -33,6 +33,10 @@ module LightweightAttributes
       changed_attributes.each_with_object({}) {|(k, v), h| h[k] = [v, @attributes[k]]}
     end
 
+    def changed_attribute_names_to_save
+      changed_attributes.keys
+    end
+
     def has_changes_to_save?
       changed_attributes.any?
     end
