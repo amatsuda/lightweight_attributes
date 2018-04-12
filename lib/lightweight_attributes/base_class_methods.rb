@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'base_methods'
+
 module LightweightAttributes
   module BaseClassMethods
     def _default_attributes # :nodoc:
@@ -21,6 +23,11 @@ module LightweightAttributes
       else
         super
       end
+    end
+
+    def load_schema!
+      super
+      include BaseMethods if attributes_to_define_after_schema_loads.empty?
     end
   end
 end
