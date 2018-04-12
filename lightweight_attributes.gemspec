@@ -1,10 +1,9 @@
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "lightweight_attributes/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "lightweight_attributes"
-  spec.version       = LightweightAttributes::VERSION
+  spec.version       = '0.1.0'.freeze
   spec.authors       = ["Akira Matsuda"]
   spec.email         = ["ronnie@dio.jp"]
 
