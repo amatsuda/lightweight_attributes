@@ -50,6 +50,9 @@ module LightweightAttributes
     end
 
     private def forget_attribute_assignments
+      @changed_attributes.each do |k, v|
+        @attributes[k] = v
+      end
       @changed_attributes.clear
     end
   end
