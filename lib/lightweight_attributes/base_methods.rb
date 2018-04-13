@@ -13,6 +13,7 @@ module LightweightAttributes
     def _write_attribute(attr_name, value)
       was = @attributes[attr_name]
       changed_attributes[attr_name] = was unless changed_attributes.key? attr_name
+      value = self.class.attribute_types[attr_name].send :cast_value, value
       @attributes[attr_name] = value
     end
 
