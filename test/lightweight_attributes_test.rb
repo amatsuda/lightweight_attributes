@@ -24,9 +24,14 @@ class LightweightAttributesTest < Minitest::Test
     migration.down
   end
 
+  def assert_lightweight_attributes(model)
+    assert_instance_of LightweightAttributes::AttributeSet, model.instance_variable_get(:@attributes)
+  end
+
   def test_new_with_no_defaults
     with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
       p = Post.new
+      assert_lightweight_attributes p
       assert_nil p.name
       assert_nil p.body
       assert_nil p.posted_at
