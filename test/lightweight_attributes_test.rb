@@ -5,6 +5,16 @@ require "test_helper"
 class LightweightAttributesTest < Minitest::Test
   ActiveRecord::Migration.verbose = false
 
+  def setup
+    super
+    Object.const_set :Post, Class.new(ActiveRecord::Base)
+  end
+
+  def teardown
+    super
+    Object.send :remove_const, :Post
+  end
+
   def with_attributes(*attrs)
     migration = Class.new(ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration) do
       define_singleton_method :up do

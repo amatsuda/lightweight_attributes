@@ -16,5 +16,3 @@ module TestApp
     config.active_support.deprecation = :log
   end.initialize!
 end
-
-class Post < ActiveRecord::Base; end
