@@ -14,6 +14,10 @@ module LightweightAttributes
       self[name]
     end
 
+    def to_hash
+      @attributes
+    end
+
     private
 
     attr_reader :attributes
