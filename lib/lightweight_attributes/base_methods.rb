@@ -16,6 +16,11 @@ module LightweightAttributes
       @attributes[attr_name] = value
     end
 
+    # AR 5.0
+    private def write_attribute_with_type_cast(attr_name, value, _should_type_cast)
+      _write_attribute attr_name, value
+    end
+
     #NOTE: Should be true for user posted Time Hash, but who cares?
     def attribute_came_from_user?(_attribute_name)
       false
@@ -54,6 +59,11 @@ module LightweightAttributes
         @attributes[k] = v
       end
       @changed_attributes.clear
+    end
+
+    # AR 5.0
+    def store_original_attributes
+      forget_attribute_assignments
     end
   end
 end
