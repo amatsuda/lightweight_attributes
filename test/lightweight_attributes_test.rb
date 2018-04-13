@@ -31,6 +31,7 @@ class LightweightAttributesTest < Minitest::Test
 
     migration.up
     yield
+  ensure
     migration.down
   end
 
