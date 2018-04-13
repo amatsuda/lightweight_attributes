@@ -63,4 +63,46 @@ class LightweightAttributesTest < Minitest::Test
       assert true, p.published
     end
   end
+
+  def test_writer
+    with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
+      p = Post.new
+      p.name = 'hello'
+      p.body = 'world'
+      p.posted_at = (now = Time.current)
+      p.category = 3
+      p.published = true
+
+      assert_equal 'hello', p.name
+      assert_equal 'world', p.body
+      assert_equal now, p.posted_at
+      assert_equal 3, p.category
+      assert_equal true, p.published
+    end
+  end
+
+  def test_new_with_attributes
+    with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
+      p = Post.new name: 'hello', body: 'world', posted_at: (now = Time.current), category: 3, published: true
+
+      assert_equal 'hello', p.name
+      assert_equal 'world', p.body
+      assert_equal now, p.posted_at
+      assert_equal 3, p.category
+      assert_equal true, p.published
+    end
+  end
+
+  def test_mass_assignment
+    with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
+      p = Post.new
+      p.attributes = {name: 'hello', body: 'world', posted_at: (now = Time.current), category: 3, published: true}
+
+      assert_equal 'hello', p.name
+      assert_equal 'world', p.body
+      assert_equal now, p.posted_at
+      assert_equal 3, p.category
+      assert_equal true, p.published
+    end
+  end
 end
