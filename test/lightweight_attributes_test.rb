@@ -39,4 +39,17 @@ class LightweightAttributesTest < Minitest::Test
       assert_nil p.published
     end
   end
+
+  def test_new_with_defaults
+    now = Time.current
+    with_attributes [:name, :string, 'hello'], [:body, :text, 'world'], [:posted_at, :datetime, now], [:category, :integer, 3], [:published, :boolean, true] do
+      p = Post.new
+      assert_lightweight_attributes p
+      assert 'hello', p.name
+      assert 'world', p.body
+      assert now, p.posted_at
+      assert 3, p.category
+      assert true, p.published
+    end
+  end
 end
