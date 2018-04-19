@@ -64,6 +64,20 @@ class LightweightAttributesTest < Minitest::Test
     end
   end
 
+  def test_reader
+    with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
+      now = Time.current
+      Post.connection.execute "insert into posts(name, body, posted_at, category, published) values ('hello', 'world', '#{now.to_s(:db)}', 123, true)"
+
+      p = Post.last
+      assert_equal 'hello', p.name
+      assert_equal 'world', p.body
+      assert_equal now, p.posted_at
+      assert_equal 123, p.category
+      assert_equal true, p.published
+    end
+  end
+
   def test_writer
     with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
       p = Post.new
