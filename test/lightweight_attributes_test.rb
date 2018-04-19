@@ -78,6 +78,10 @@ class LightweightAttributesTest < Minitest::Test
       assert_equal now, p.posted_at
       assert_equal 3, p.category
       assert_equal true, p.published
+
+      # type casting
+      p.published = 0
+      assert_equal false, p.published
     end
   end
 
