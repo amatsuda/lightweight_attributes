@@ -7,6 +7,7 @@ require 'active_record'
 require 'active_record/railtie'
 
 require "minitest/autorun"
+require 'byebug'
 
 ENV['DATABASE_URL'] = 'sqlite3::memory:'
 
