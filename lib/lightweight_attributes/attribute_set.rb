@@ -18,6 +18,10 @@ module LightweightAttributes
       @attributes
     end
 
+    def write_from_user(name, value)
+      _write_attribute name, value
+    end
+
     private
 
     attr_reader :attributes
