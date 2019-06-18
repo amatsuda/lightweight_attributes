@@ -11,7 +11,8 @@ module LightweightAttributes
       end
 
       def build_from_database(values = {}, _additional_types = {})
-        LightweightAttributes::AttributeSet.new values
+        casted = values.each_with_object({}) {|(col, val), h| h[col] = @types[col].deserialize val }
+        LightweightAttributes::AttributeSet.new casted
       end
     end
   end
