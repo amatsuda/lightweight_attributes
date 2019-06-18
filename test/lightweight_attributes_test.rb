@@ -39,10 +39,14 @@ class LightweightAttributesTest < Minitest::Test
     assert_instance_of LightweightAttributes::AttributeSet, model.instance_variable_get(:@attributes)
   end
 
+  def assert_not_lightweight_attributes(model)
+    refute_instance_of LightweightAttributes::AttributeSet, model.instance_variable_get(:@attributes)
+  end
+
   def test_new_with_no_defaults
     with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
       p = Post.new
-      assert_lightweight_attributes p
+      assert_not_lightweight_attributes p
       assert_nil p.name
       assert_nil p.body
       assert_nil p.posted_at
@@ -55,7 +59,7 @@ class LightweightAttributesTest < Minitest::Test
     now = Time.current
     with_attributes [:name, :string, 'hello'], [:body, :text, 'world'], [:posted_at, :datetime, now], [:category, :integer, 3], [:published, :boolean, true] do
       p = Post.new
-      assert_lightweight_attributes p
+      assert_not_lightweight_attributes p
       assert 'hello', p.name
       assert 'world', p.body
       assert now, p.posted_at
