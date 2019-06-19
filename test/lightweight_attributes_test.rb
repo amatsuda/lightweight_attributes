@@ -56,6 +56,7 @@ class LightweightAttributesTest < Minitest::Test
       Post.connection.execute "insert into posts(name, body, posted_at, category, published) values ('hello', 'world', '#{now.to_s(:db)}', 123, true)"
 
       p = Post.last
+      assert_lightweight_attributes p
       assert_equal 'hello', p.name
       assert_equal 'world', p.body
       assert_equal now, p.posted_at
