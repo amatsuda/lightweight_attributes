@@ -64,4 +64,17 @@ class LightweightAttributesTest < Minitest::Test
       assert_equal true, p.published
     end
   end
+
+  def test_writer
+    with_attributes [:name, :string] do
+      Post.connection.execute "insert into posts(name) values ('hello')"
+
+      p = Post.last
+      assert_lightweight_attributes p
+
+      p.name = 'updated!'
+      assert_equal 'updated!', p.name
+      assert_not_lightweight_attributes p
+    end
+  end
 end
