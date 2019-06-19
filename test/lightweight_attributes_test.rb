@@ -43,28 +43,10 @@ class LightweightAttributesTest < Minitest::Test
     refute_instance_of LightweightAttributes::AttributeSet, model.instance_variable_get(:@attributes)
   end
 
-  def test_new_with_no_defaults
+  def test_new
     with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
       p = Post.new
       assert_not_lightweight_attributes p
-      assert_nil p.name
-      assert_nil p.body
-      assert_nil p.posted_at
-      assert_nil p.category
-      assert_nil p.published
-    end
-  end
-
-  def test_new_with_defaults
-    now = Time.current
-    with_attributes [:name, :string, 'hello'], [:body, :text, 'world'], [:posted_at, :datetime, now], [:category, :integer, 3], [:published, :boolean, true] do
-      p = Post.new
-      assert_not_lightweight_attributes p
-      assert 'hello', p.name
-      assert 'world', p.body
-      assert now, p.posted_at
-      assert 3, p.category
-      assert true, p.published
     end
   end
 
@@ -78,52 +60,6 @@ class LightweightAttributesTest < Minitest::Test
       assert_equal 'world', p.body
       assert_equal now, p.posted_at
       assert_equal 123, p.category
-      assert_equal true, p.published
-    end
-  end
-
-  def test_writer
-    with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
-      p = Post.new
-      p.name = 'hello'
-      p.body = 'world'
-      p.posted_at = (now = Time.current)
-      p.category = 3
-      p.published = true
-
-      assert_equal 'hello', p.name
-      assert_equal 'world', p.body
-      assert_equal now, p.posted_at
-      assert_equal 3, p.category
-      assert_equal true, p.published
-
-      # type casting
-      p.published = 0
-      assert_equal false, p.published
-    end
-  end
-
-  def test_new_with_attributes
-    with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
-      p = Post.new name: 'hello', body: 'world', posted_at: (now = Time.current), category: 3, published: true
-
-      assert_equal 'hello', p.name
-      assert_equal 'world', p.body
-      assert_equal now, p.posted_at
-      assert_equal 3, p.category
-      assert_equal true, p.published
-    end
-  end
-
-  def test_mass_assignment
-    with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
-      p = Post.new
-      p.attributes = {name: 'hello', body: 'world', posted_at: (now = Time.current), category: 3, published: true}
-
-      assert_equal 'hello', p.name
-      assert_equal 'world', p.body
-      assert_equal now, p.posted_at
-      assert_equal 3, p.category
       assert_equal true, p.published
     end
   end
