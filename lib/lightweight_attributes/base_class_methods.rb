@@ -7,10 +7,10 @@ module LightweightAttributes
     def attributes_builder
       if attributes_to_define_after_schema_loads.empty?
         unless defined?(@attributes_builder) && @attributes_builder
-          @_original_attributes_builder = super
+          original_attributes_builder = super
 
           defaults = _default_attributes.except(*(column_names - [primary_key]))
-          @attributes_builder = LightweightAttributes::AttributeSet::Builder.new(attribute_types, defaults)
+          @attributes_builder = LightweightAttributes::AttributeSet::Builder.new(attribute_types, defaults, original_attributes_builder)
         end
         @attributes_builder
       else

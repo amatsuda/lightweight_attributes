@@ -3,11 +3,12 @@
 module LightweightAttributes
   class AttributeSet
     class Builder
-      attr_reader :types, :default_attributes, :original_values, :original_additional_types
+      attr_reader :types, :default_attributes
 
-      def initialize(types, default_attributes = {})
+      def initialize(types, default_attributes = {}, original_attributes_builder)
         @types = types
         @default_attributes = default_attributes
+        @original_attributes_builder = original_attributes_builder
       end
 
       def build_from_database(values = {}, _additional_types = {})
@@ -16,6 +17,10 @@ module LightweightAttributes
 
         casted = values.each_with_object({}) {|(col, val), h| h[col] = @types[col].deserialize val }
         LightweightAttributes::AttributeSet.new casted
+      end
+
+      def build_original_from_database
+        @original_attributes_builder.build_from_database @original_values, @original_additional_types
       end
     end
   end
