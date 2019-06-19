@@ -44,20 +44,20 @@ class LightweightAttributesTest < Minitest::Test
   end
 
   def test_new
-    with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
+    with_attributes [:title, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
       p = Post.new
       assert_not_lightweight_attributes p
     end
   end
 
   def test_reader
-    with_attributes [:name, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
+    with_attributes [:title, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
       now = Time.current.change(usec: 0)
-      Post.connection.execute "insert into posts(name, body, posted_at, category, published) values ('hello', 'world', '#{now.to_s(:db)}', 123, true)"
+      Post.connection.execute "insert into posts(title, body, posted_at, category, published) values ('hello', 'world', '#{now.to_s(:db)}', 123, true)"
 
       p = Post.last
       assert_lightweight_attributes p
-      assert_equal 'hello', p.name
+      assert_equal 'hello', p.title
       assert_equal 'world', p.body
       assert_equal now, p.posted_at
       assert_equal 123, p.category
@@ -66,14 +66,14 @@ class LightweightAttributesTest < Minitest::Test
   end
 
   def test_writer
-    with_attributes [:name, :string] do
-      Post.connection.execute "insert into posts(name) values ('hello')"
+    with_attributes [:title, :string] do
+      Post.connection.execute "insert into posts(title) values ('hello')"
 
       p = Post.last
       assert_lightweight_attributes p
 
-      p.name = 'updated!'
-      assert_equal 'updated!', p.name
+      p.title = 'updated!'
+      assert_equal 'updated!', p.title
       assert_not_lightweight_attributes p
     end
   end
