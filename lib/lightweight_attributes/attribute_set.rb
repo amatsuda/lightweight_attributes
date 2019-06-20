@@ -11,7 +11,7 @@ module LightweightAttributes
     end
 
     def fetch_value(name)
-      self[name]
+      @attributes[name]
     end
 
     def to_hash
