@@ -15,9 +15,7 @@ module LightweightAttributes
         @original_values = values
         @original_additional_types = _additional_types
 
-        casted = {}
-        values.each_pair {|col, val| casted[col] = @types[col].deserialize val }
-        LightweightAttributes::AttributeSet.new casted
+        LightweightAttributes::AttributeSet.new values, @types
       end
 
       def build_original_from_database

@@ -6,12 +6,14 @@ module LightweightAttributes
   class AttributeSet
     delegate :each_value, :fetch, :except, :[], :[]=, :key?, :keys, to: :attributes
 
-    def initialize(attributes)
-      @attributes = attributes
+    def initialize(raw_attributes, types)
+      @raw_attributes = raw_attributes
+      @types = types
+      @attributes = {}
     end
 
     def fetch_value(name)
-      @attributes[name]
+      @attributes[name] ||= @types[name].deserialize @raw_attributes[name]
     end
 
     def to_hash
