@@ -13,7 +13,10 @@ module LightweightAttributes
     end
 
     def fetch_value(name)
-      @attributes[name] ||= @types[name].deserialize @raw_attributes[name]
+      @attributes[name] ||= begin
+        type = @types[name]
+        ActiveModel::Type::String === type ? @raw_attributes[name] : type.deserialize(@raw_attributes[name])
+      end
     end
 
     def to_hash
