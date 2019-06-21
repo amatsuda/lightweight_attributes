@@ -12,6 +12,7 @@ class LightweightAttributesTest < Minitest::Test
 
   def teardown
     super
+    ActiveRecord::Base.clear_all_connections!
     Object.send :remove_const, :Post
   end
 
