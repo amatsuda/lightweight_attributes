@@ -15,7 +15,7 @@ module LightweightAttributes
         @original_values = values
         @original_additional_types = _additional_types
 
-        LightweightAttributes::AttributeSet.new values, @types
+        LightweightAttributes::AttributeSet.new values, @types, _additional_types
       end
 
       def build_original_from_database

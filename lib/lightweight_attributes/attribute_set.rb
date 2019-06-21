@@ -6,9 +6,10 @@ module LightweightAttributes
   class AttributeSet
     delegate :each_value, :fetch, :except, :[], :[]=, :key?, :keys, to: :attributes
 
-    def initialize(raw_attributes, types)
+    def initialize(raw_attributes, types, additional_types)
       @raw_attributes = raw_attributes
       @types = types
+      @additional_types = additional_types
       @attributes = {}
     end
 
