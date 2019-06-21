@@ -12,14 +12,11 @@ module LightweightAttributes
       end
 
       def build_from_database(values = {}, _additional_types = {})
-        @original_values = values
-        @original_additional_types = _additional_types
-
         LightweightAttributes::AttributeSet.new values, @types, _additional_types
       end
 
-      def build_original_from_database
-        @original_attributes_builder.build_from_database @original_values, @original_additional_types
+      def build_original_from_database(values, additional_types)
+        @original_attributes_builder.build_from_database values, additional_types
       end
     end
   end

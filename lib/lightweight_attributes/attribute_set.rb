@@ -4,6 +4,8 @@ require_relative 'attribute_set/builder'
 
 module LightweightAttributes
   class AttributeSet
+    attr_reader :raw_attributes, :additional_types
+
     delegate :each_value, :fetch, :except, :[], :[]=, :key?, :keys, to: :attributes
 
     def initialize(raw_attributes, types, additional_types)
