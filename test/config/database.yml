@@ -1,0 +1,24 @@
+<% case ENV['DB']
+   when 'sqlite3' %>
+test:
+  adapter: sqlite3
+  database: ':memory:'
+  pool: 5
+  timeout: 5000
+
+<% when 'mysql' %>
+test:
+  adapter: mysql2
+  host: localhost
+  username: root
+  password:
+  database: lightweight_attributes_test
+
+<% when 'postgresql' %>
+test:
+  adapter: postgresql
+  host: localhost
+  username: postgres
+  password:
+  database: lightweight_attributes_test
+<% end %>

@@ -9,8 +9,8 @@ require 'active_record/railtie'
 require "minitest/autorun"
 require 'byebug'
 
-ENV['DATABASE_URL'] = 'sqlite3::memory:'
 ENV['RAILS_ENV'] = 'test'
+ENV['DB'] ||= 'sqlite3'
 
 module TestApp
   Application = Class.new(Rails::Application) do
