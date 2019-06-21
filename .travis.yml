@@ -1,5 +1,11 @@
 sudo: false
 language: ruby
 rvm:
-  - 2.6.0
-before_install: gem install bundler -v 1.16.1
+  - 2.6.3
+
+cache: bundler
+
+env:
+  - DB=sqlite3
+  - DB=mysql
+  - DB=postgresql
