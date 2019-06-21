@@ -8,4 +8,5 @@
 /tmp/
 Gemfile.lock
 /log/
+/test/log/
 .byebug_history
