@@ -16,5 +16,6 @@ module TestApp
   Application = Class.new(Rails::Application) do
     config.eager_load = false
     config.active_support.deprecation = :log
+    config.root = __dir__
   end.initialize!
 end
