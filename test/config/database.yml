@@ -2,7 +2,7 @@
    when 'sqlite3' %>
 test:
   adapter: sqlite3
-  database: ':memory:'
+  database: db/lightweight_attributes_test.sqlite3
   pool: 5
   timeout: 5000
 
