@@ -19,3 +19,6 @@ module TestApp
     config.root = __dir__
   end.initialize!
 end
+
+ActiveRecord::Tasks::DatabaseTasks.drop_current 'test'
+ActiveRecord::Tasks::DatabaseTasks.create_current 'test'
