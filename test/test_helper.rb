@@ -10,6 +10,7 @@ require "minitest/autorun"
 require 'byebug'
 
 ENV['DATABASE_URL'] = 'sqlite3::memory:'
+ENV['RAILS_ENV'] = 'test'
 
 module TestApp
   Application = Class.new(Rails::Application) do
