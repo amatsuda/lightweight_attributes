@@ -6,8 +6,8 @@ module LightweightAttributes
   class AttributeSet
     attr_reader :raw_attributes, :additional_types
 
-    delegate :each_value, :fetch, :except, :[], :[]=, to: :attributes
-    delegate :key?, :keys, to: :raw_attributes
+    delegate :each_value, :fetch, :except, :[], :[]=, to: :@attributes
+    delegate :key?, :keys, to: :@raw_attributes
 
     def initialize(raw_attributes, types, additional_types)
       @raw_attributes = raw_attributes
