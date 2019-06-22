@@ -1,5 +1,5 @@
-sudo: false
 language: ruby
+
 rvm:
   - 2.6.3
 
