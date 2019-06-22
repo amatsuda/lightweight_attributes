@@ -9,3 +9,9 @@ env:
   - DB=sqlite3
   - DB=mysql
   - DB=postgresql
+
+gemfile:
+  - gemfiles/rails_50.gemfile
+  - gemfiles/rails_51.gemfile
+  - gemfiles/rails_52.gemfile
+  - gemfiles/rails_60.gemfile
