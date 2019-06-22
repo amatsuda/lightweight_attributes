@@ -12,13 +12,4 @@ require 'byebug'
 ENV['RAILS_ENV'] = 'test'
 ENV['DB'] ||= 'sqlite3'
 
-module TestApp
-  Application = Class.new(Rails::Application) do
-    config.eager_load = false
-    config.active_support.deprecation = :log
-    config.root = __dir__
-  end.initialize!
-end
-
-ActiveRecord::Tasks::DatabaseTasks.drop_current 'test'
-ActiveRecord::Tasks::DatabaseTasks.create_current 'test'
+require_relative 'dummy_app'

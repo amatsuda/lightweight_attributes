@@ -3,8 +3,6 @@
 require "test_helper"
 
 class LightweightAttributesTest < Minitest::Test
-  ActiveRecord::Migration.verbose = false
-
   def setup
     super
     Object.const_set :Post, Class.new(ActiveRecord::Base)
