@@ -10,3 +10,4 @@ Gemfile.lock
 /log/
 /test/log/
 .byebug_history
+*.sqlite3
