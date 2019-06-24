@@ -1,13 +1,13 @@
 <% case ENV['DB']
    when 'sqlite3' %>
-test:
+test: &test
   adapter: sqlite3
   database: db/lightweight_attributes_test.sqlite3
   pool: 5
   timeout: 5000
 
 <% when 'mysql' %>
-test:
+test: &test
   adapter: mysql2
   host: localhost
   username: root
@@ -15,10 +15,13 @@ test:
   database: lightweight_attributes_test
 
 <% when 'postgresql' %>
-test:
+test: &test
   adapter: postgresql
   host: localhost
   username: postgres
   password:
   database: lightweight_attributes_test
 <% end %>
+
+production:
+  <<: *test
