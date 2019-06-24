@@ -5,13 +5,13 @@ module LightweightAttributes
     class Builder
       attr_reader :types, :default_attributes
 
-      def initialize(types, default_attributes = {}, original_attributes_builder)
+      def initialize(types, default_attributes, original_attributes_builder)
         @types = types
         @default_attributes = default_attributes
         @original_attributes_builder = original_attributes_builder
       end
 
-      def build_from_database(values = {}, _additional_types = {})
+      def build_from_database(values, _additional_types)
         LightweightAttributes::AttributeSet.new values, @types, _additional_types
       end
 
