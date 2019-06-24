@@ -36,10 +36,12 @@ def measure(benchmarker)
   records = result_set.map {|record| Model.instantiate(record, column_types) }
   records.each {|r| v = r.id; v = r.col1; v = r.col2; v = r.col3; v = r.col4; v = r.col5; v = r.col6; v = r.col7; v = r.col8; v = v = r.col9 }
 
-  benchmarker.call do
+  result = benchmarker.call do
     records = result_set.map {|record| Model.instantiate(record, column_types) }
     records.each {|r| v = r.id; v = r.col1; v = r.col2; v = r.col3; v = r.col4; v = r.col5; v = r.col6; v = r.col7; v = r.col8; v = v = r.col9 }
   end
+
+  result.is_a?(MemoryProfiler::Results) ? result.pretty_print : pp(result)
 end
 
 benchmark = case ARGV[0]
@@ -52,10 +54,11 @@ end
 
 GC.disable
 
-result = measure benchmark
-
 puts "#{'*' * 30} ActiveModel::AttributeSet #{'*' * 30}"
-result.is_a?(MemoryProfiler::Results) ? result.pretty_print : pp(result)
+
+measure benchmark
+
+puts; puts; puts "#{'*' * 30} LightweightAttributes #{'*' * 30}"
 
 require_relative 'lib/lightweight_attributes'
 require_relative 'lib/lightweight_attributes/base_class_methods'
@@ -63,7 +66,4 @@ require_relative 'lib/lightweight_attributes/base_class_methods'
 Model.instance_variable_set :@attributes_builder, nil
 LightweightAttributes::BaseClassMethods.instance_method(:attributes_builder).bind(Model).call
 
-result = measure benchmark
-
-puts; puts; puts "#{'*' * 30} LightweightAttributes #{'*' * 30}"
-result.is_a?(MemoryProfiler::Results) ? result.pretty_print : pp(result)
+measure benchmark
