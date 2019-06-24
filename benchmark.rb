@@ -27,7 +27,7 @@ end
 
 #copied from AR 5.2.3 querying.rb
 # def find_by_sql(sql, binds = [], preparable: nil, &block)
-def measure
+def measure(benchmarker)
   result_set = Model.connection.select_all(Model.all.arel, '', [], preparable: false)
   column_types = result_set.column_types.dup
   Model.attribute_types.each_key { |k| column_types.delete k }
@@ -36,18 +36,26 @@ def measure
   records = result_set.map {|record| Model.instantiate(record, column_types) }
   records.each {|r| v = r.id; v = r.col1; v = r.col2; v = r.col3; v = r.col4; v = r.col5; v = r.col6; v = r.col7; v = r.col8; v = v = r.col9 }
 
-  MemoryProfiler.report do
+  benchmarker.call do
     records = result_set.map {|record| Model.instantiate(record, column_types) }
     records.each {|r| v = r.id; v = r.col1; v = r.col2; v = r.col3; v = r.col4; v = r.col5; v = r.col6; v = r.col7; v = r.col8; v = v = r.col9 }
   end
 end
 
+benchmark = case ARGV[0]
+when 'time'
+  ->(&b) { now = Time.now; b.call; Time.now - now }
+else
+  ->(&b) { MemoryProfiler.report(&b) }
+end
+
+
 GC.disable
 
-result = measure
+result = measure benchmark
 
 puts "#{'*' * 30} ActiveModel::AttributeSet #{'*' * 30}"
-result.pretty_print
+result.is_a?(MemoryProfiler::Results) ? result.pretty_print : pp(result)
 
 require_relative 'lib/lightweight_attributes'
 require_relative 'lib/lightweight_attributes/base_class_methods'
@@ -55,7 +63,7 @@ require_relative 'lib/lightweight_attributes/base_class_methods'
 Model.instance_variable_set :@attributes_builder, nil
 LightweightAttributes::BaseClassMethods.instance_method(:attributes_builder).bind(Model).call
 
-result = measure
+result = measure benchmark
 
 puts; puts; puts "#{'*' * 30} LightweightAttributes #{'*' * 30}"
-result.pretty_print
+result.is_a?(MemoryProfiler::Results) ? result.pretty_print : pp(result)
