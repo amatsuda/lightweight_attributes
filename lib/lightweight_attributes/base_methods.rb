@@ -19,5 +19,13 @@ module LightweightAttributes
         super
       end
     end
+
+    def attribute_changed?(*)
+      if LightweightAttributes::AttributeSet === @attributes
+        @attributes = self.class.attributes_builder.build_original_from_database @attributes.raw_attributes, @attributes.additional_types
+      end
+
+      super
+    end
   end
 end
