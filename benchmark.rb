@@ -58,11 +58,13 @@ else
 end
 
 
-GC.disable
+GC.start
 
 puts "#{'*' * 30} ActiveModel::AttributeSet #{'*' * 30}"
 
 measure benchmark
+
+GC.start
 
 puts; puts; puts "#{'*' * 30} LightweightAttributes #{'*' * 30}"
 
