@@ -47,6 +47,12 @@ end
 benchmark = case ARGV[0]
 when 'time'
   ->(&b) { now = Time.now; b.call; Time.now - now }
+when 'methods'
+  ->(&b) do
+    [].tap do |methods|
+      TracePoint.new(:call) {|t| methods << "#{t.defined_class}##{t.method_id}" }.enable { b.call }
+    end.tally
+  end
 else
   ->(&b) { MemoryProfiler.report(&b) }
 end
