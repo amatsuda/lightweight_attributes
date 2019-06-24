@@ -27,5 +27,15 @@ module LightweightAttributes
 
       super
     end
+
+    if ::ActiveRecord::VERSION::MAJOR == 6
+      def attribute_was(*)
+        if LightweightAttributes::AttributeSet === @attributes
+          @attributes = self.class.attributes_builder.build_original_from_database @attributes.raw_attributes, @attributes.additional_types
+        end
+
+        super
+      end
+    end
   end
 end
