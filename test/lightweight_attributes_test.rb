@@ -145,4 +145,28 @@ class LightweightAttributesTest < Minitest::Test
       assert_equal %w(id title), p.accessed_fields
     end
   end
+
+  def test_attributes_before_type_cast
+    with_attributes [:title, :string] do
+      Post.connection.execute "insert into posts(title) values ('hello')"
+
+      p = Post.last
+      assert_lightweight_attributes p
+
+      assert_equal({'id' => 1, 'title' => 'hello'}, p.attributes_before_type_cast)
+      assert_not_lightweight_attributes p
+    end
+  end
+
+  def test_read_attribute_before_type_cast
+    with_attributes [:title, :string] do
+      Post.connection.execute "insert into posts(title) values ('hello')"
+
+      p = Post.last
+      assert_lightweight_attributes p
+
+      assert_equal 'hello', p.read_attribute_before_type_cast(:title)
+      assert_not_lightweight_attributes p
+    end
+  end
 end

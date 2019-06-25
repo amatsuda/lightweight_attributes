@@ -20,6 +20,22 @@ module LightweightAttributes
       end
     end
 
+    def read_attribute_before_type_cast(*)
+      if LightweightAttributes::AttributeSet === @attributes
+        @attributes = self.class.attributes_builder.build_original_from_database @attributes.raw_attributes, @attributes.additional_types
+      end
+
+      super
+    end
+
+    def attributes_before_type_cast
+      if LightweightAttributes::AttributeSet === @attributes
+        @attributes = self.class.attributes_builder.build_original_from_database @attributes.raw_attributes, @attributes.additional_types
+      end
+
+      super
+    end
+
     private
 
     if (::ActiveRecord::VERSION::MAJOR == 5) && (::ActiveRecord::VERSION::MINOR < 2)
