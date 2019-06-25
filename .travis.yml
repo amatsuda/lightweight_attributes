@@ -14,6 +14,8 @@ rvm:
 
 cache: bundler
 
+before_install: gem up bundler
+
 env:
   - DB=sqlite3
   - DB=mysql
