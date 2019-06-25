@@ -63,5 +63,9 @@ module LightweightAttributes
 
       super
     end
+
+    def forget_attribute_assignments
+      # do nothing
+    end
   end
 end

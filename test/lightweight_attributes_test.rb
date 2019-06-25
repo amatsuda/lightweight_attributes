@@ -169,4 +169,16 @@ class LightweightAttributesTest < Minitest::Test
       assert_not_lightweight_attributes p
     end
   end
+
+  def test_clear_changes_information
+    with_attributes [:title, :string] do
+      Post.connection.execute "insert into posts(title) values ('hello')"
+
+      p = Post.last
+      assert_lightweight_attributes p
+
+      assert_nil p.clear_changes_information
+      assert_lightweight_attributes p
+    end
+  end
 end
