@@ -60,8 +60,14 @@ module LightweightAttributes
       false
     end
 
-    def forget_attribute_assignments
-      # do nothing
+    if (::ActiveRecord::VERSION::MAJOR == 5) && (::ActiveRecord::VERSION::MINOR == 0)
+      def store_original_attributes
+        # do nothing
+      end
+    else
+      def forget_attribute_assignments
+        # do nothing
+      end
     end
   end
 end
