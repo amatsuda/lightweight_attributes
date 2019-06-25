@@ -17,15 +17,15 @@ module LightweightAttributes
     end
 
     def fetch_value(name)
-      @attributes[name] ||= begin
-        type = @types[name]
-        ActiveModel::Type::String === type ? @raw_attributes[name] : type.deserialize(@raw_attributes[name])
-      end
+      return @attributes[name] if @attributes.key? name
+
+      type = @types[name]
+      @attributes[name] = ActiveModel::Type::String === type ? @raw_attributes[name] : type.deserialize(@raw_attributes[name])
     end
 
     def to_hash
       @raw_attributes.each do |k, v|
-        @attributes[k] ||= ActiveModel::Type::String === type ? @raw_attributes[k] : @types[k].deserialize(v)
+        @attributes[k] = ActiveModel::Type::String === type ? @raw_attributes[k] : @types[k].deserialize(v) unless @attributes.key? k
       end
       @attributes
     end
