@@ -130,4 +130,19 @@ class LightweightAttributesTest < Minitest::Test
       assert_equal(%w(id title), p.attributes.to_hash.keys)
     end
   end
+
+  def test_accessed_fields
+    with_attributes [:title, :string] do
+      Post.connection.execute "insert into posts(title) values ('hello')"
+
+      p = Post.last
+      assert_lightweight_attributes p
+
+      assert_equal [], p.accessed_fields
+      _ = p.title
+      assert_equal %w(title), p.accessed_fields
+      _ = p.id
+      assert_equal %w(id title), p.accessed_fields
+    end
+  end
 end

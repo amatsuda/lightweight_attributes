@@ -25,6 +25,10 @@ module LightweightAttributes
       @attributes[name] = ActiveModel::Type::String === type ? @raw_attributes[name] : type.deserialize(@raw_attributes[name])
     end
 
+    def accessed
+      sort_attributes!.keys
+    end
+
     def to_hash
       @raw_attributes.each do |k, v|
         unless @attributes.key? k
