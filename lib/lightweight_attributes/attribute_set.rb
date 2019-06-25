@@ -14,18 +14,23 @@ module LightweightAttributes
       @types = types
       @additional_types = additional_types
       @attributes = {}
+      @sorted = true
     end
 
     def fetch_value(name)
       return @attributes[name] if @attributes.key? name
 
+      @sorted = false unless @attributes.empty?
       type = @types[name]
       @attributes[name] = ActiveModel::Type::String === type ? @raw_attributes[name] : type.deserialize(@raw_attributes[name])
     end
 
     def to_hash
       @raw_attributes.each do |k, v|
-        @attributes[k] = ActiveModel::Type::String === type ? @raw_attributes[k] : @types[k].deserialize(v) unless @attributes.key? k
+        unless @attributes.key? k
+          @sorted = false unless @attributes.empty?
+          @attributes[k] = ActiveModel::Type::String === type ? @raw_attributes[k] : @types[k].deserialize(v)
+        end
       end
 
       sort_attributes!
@@ -36,6 +41,9 @@ module LightweightAttributes
     attr_reader :attributes
 
     def sort_attributes!
+      return @attributes if @sorted
+
+      @sorted = true
       @attributes = @raw_attributes.each_key.with_object({}) do |k, h|
         h[k] = @attributes[k] if @attributes.key? k
       end
