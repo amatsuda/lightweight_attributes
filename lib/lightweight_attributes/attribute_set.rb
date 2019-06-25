@@ -34,7 +34,7 @@ module LightweightAttributes
         unless @attributes.key? k
           @sorted = false unless @attributes.empty?
           type = @types[k]
-          @attributes[k] = ActiveModel::Type::String === type ? @raw_attributes[k] : types.deserialize(v)
+          @attributes[k] = ActiveModel::Type::String === type ? @raw_attributes[k] : type.deserialize(v)
         end
       end
 
