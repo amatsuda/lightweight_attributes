@@ -113,7 +113,7 @@ class LightweightAttributesTest < Minitest::Test
       assert_lightweight_attributes p
 
       assert_equal false, p.title_came_from_user?
-      assert_not_lightweight_attributes p
+      assert_lightweight_attributes p
     end
   end
 

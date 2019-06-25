@@ -57,11 +57,7 @@ module LightweightAttributes
     end
 
     def attribute_came_from_user?(*)
-      if LightweightAttributes::AttributeSet === @attributes
-        @attributes = self.class.attributes_builder.build_original_from_database @attributes.raw_attributes, @attributes.additional_types
-      end
-
-      super
+      false
     end
 
     def forget_attribute_assignments
