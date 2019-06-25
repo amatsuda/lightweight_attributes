@@ -25,7 +25,7 @@ module LightweightAttributes
 
     def to_hash
       @raw_attributes.each do |k, v|
-        @attributes[k] ||= @types[k].deserialize v
+        @attributes[k] ||= ActiveModel::Type::String === type ? @raw_attributes[k] : @types[k].deserialize(v)
       end
       @attributes
     end
