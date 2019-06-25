@@ -27,11 +27,18 @@ module LightweightAttributes
       @raw_attributes.each do |k, v|
         @attributes[k] = ActiveModel::Type::String === type ? @raw_attributes[k] : @types[k].deserialize(v) unless @attributes.key? k
       end
-      @attributes
+
+      sort_attributes!
     end
 
     private
 
     attr_reader :attributes
+
+    def sort_attributes!
+      @attributes = @raw_attributes.each_key.with_object({}) do |k, h|
+        h[k] = @attributes[k] if @attributes.key? k
+      end
+    end
   end
 end

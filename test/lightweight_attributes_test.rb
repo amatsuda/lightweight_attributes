@@ -116,4 +116,18 @@ class LightweightAttributesTest < Minitest::Test
       assert_not_lightweight_attributes p
     end
   end
+
+  def test_to_hash
+    with_attributes [:title, :string] do
+      Post.connection.execute "insert into posts(title) values ('hello')"
+
+      p = Post.last
+      assert_lightweight_attributes p
+
+      title = p.title
+      id = p.id
+      assert_equal({'id' => id, 'title' => title}, p.attributes.to_hash)
+      assert_equal(%w(id title), p.attributes.to_hash.keys)
+    end
+  end
 end
