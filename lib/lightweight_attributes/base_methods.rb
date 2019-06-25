@@ -20,6 +20,8 @@ module LightweightAttributes
       end
     end
 
+    private
+
     def mutations_from_database
       if LightweightAttributes::AttributeSet === @attributes
         @attributes = self.class.attributes_builder.build_original_from_database @attributes.raw_attributes, @attributes.additional_types
