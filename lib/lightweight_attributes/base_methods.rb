@@ -2,6 +2,8 @@
 
 module LightweightAttributes
   module BaseMethods
+    # LightweightAttributes does not accept write_attribute.
+    # If any write_attribute attempt was made, it switches the whole attributes instance to the AR default attributes.
     if (::ActiveRecord::VERSION::MAJOR == 5) && (::ActiveRecord::VERSION::MINOR < 2)
       def write_attribute(*)
         if LightweightAttributes::AttributeSet === @attributes
@@ -38,6 +40,8 @@ module LightweightAttributes
 
     private
 
+    # LightweightAttributes does not support dirty tracking.
+    # If any dirty tracking attempt was made, it switches the whole attributes instance to the AR default attributes.
     if (::ActiveRecord::VERSION::MAJOR == 5) && (::ActiveRecord::VERSION::MINOR < 2)
       def mutation_tracker
         if LightweightAttributes::AttributeSet === @attributes
@@ -60,6 +64,7 @@ module LightweightAttributes
       false
     end
 
+    # lightweight_attributes doesn't know anything about assignments already.
     if (::ActiveRecord::VERSION::MAJOR == 5) && (::ActiveRecord::VERSION::MINOR == 0)
       def store_original_attributes
         # do nothing

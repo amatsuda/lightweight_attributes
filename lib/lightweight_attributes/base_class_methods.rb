@@ -4,6 +4,7 @@ require_relative 'base_methods'
 
 module LightweightAttributes
   module BaseClassMethods
+    # Overriding AR class method to return our custom attributes_builder only when the model has no custom attributes.
     def attributes_builder
       if attributes_to_define_after_schema_loads.empty?
         unless defined?(@attributes_builder) && @attributes_builder

@@ -17,6 +17,8 @@ module LightweightAttributes
       @sorted = true
     end
 
+    # Lazily cast the attribute from database when being fetched.
+    # For String attributes, directly returns the raw value without creating a new copy.
     def fetch_value(name)
       return @attributes[name] if @attributes.key? name
 
@@ -25,10 +27,12 @@ module LightweightAttributes
       @attributes[name] = ActiveModel::Type::String === type ? @raw_attributes[name] : type.deserialize(@raw_attributes[name])
     end
 
+    # For Model#accessed_fields
     def accessed
       sort_attributes!.keys
     end
 
+    # Cast all attributes, then return the result.
     def to_hash
       @raw_attributes.each do |k, v|
         unless @attributes.key? k

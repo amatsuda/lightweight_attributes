@@ -11,6 +11,7 @@ module LightweightAttributes
         @original_attributes_builder = original_attributes_builder
       end
 
+      # Build our own lightweight attribute set.
       def build_from_database(values, _additional_types)
         LightweightAttributes::AttributeSet.new values, @types, _additional_types
       end
