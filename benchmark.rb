@@ -1,5 +1,27 @@
 # frozen_string_literal: true
 
+# A benchmark script comparing plain Active Record v.s. LightweightAttributes powered Active Record
+#
+# Usage:
+#
+# % bundle e ruby benchmark.rb [type]
+#
+# Options:
+#
+# There are following three benchmark types:
+#
+#   * memory:  memory usage and object allocations (default)
+#   * time:    speed
+#   * methods: number of method calls
+#
+# Also, you can give `DB` and `RECORDS` parameters via env var.
+# `DB` can be either `postgresql`, `mysql`, or `sqlite3` (defaulted to `mysql`).
+# `RECORDS` can be any integer (defaulted to `10000`).
+#
+# Example:
+#
+# % DB=postgresql RECORDS=1 bundle e ruby benchmark.rb methods
+
 require 'rails'
 require 'active_record'
 require 'active_record/railtie'
