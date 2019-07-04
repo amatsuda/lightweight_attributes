@@ -61,17 +61,21 @@ module LightweightAttributes
     end
 
     def attribute_came_from_user?(*)
-      false
+      if LightweightAttributes::AttributeSet === @attributes
+        false
+      else
+        super
+      end
     end
 
     # lightweight_attributes doesn't know anything about assignments already.
     if (::ActiveRecord::VERSION::MAJOR == 5) && (::ActiveRecord::VERSION::MINOR == 0)
       def store_original_attributes
-        # do nothing
+        super unless LightweightAttributes::AttributeSet === @attributes
       end
     else
       def forget_attribute_assignments
-        # do nothing
+        super unless LightweightAttributes::AttributeSet === @attributes
       end
     end
   end
