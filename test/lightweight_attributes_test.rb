@@ -154,7 +154,7 @@ class LightweightAttributesTest < Minitest::Test
       assert_lightweight_attributes p
 
       assert_equal({'id' => 1, 'title' => 'hello'}, p.attributes_before_type_cast)
-      assert_not_lightweight_attributes p
+      assert_lightweight_attributes p
     end
   end
 
@@ -166,7 +166,7 @@ class LightweightAttributesTest < Minitest::Test
       assert_lightweight_attributes p
 
       assert_equal 'hello', p.read_attribute_before_type_cast(:title)
-      assert_not_lightweight_attributes p
+      assert_lightweight_attributes p
     end
   end
 

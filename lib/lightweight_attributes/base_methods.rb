@@ -22,20 +22,20 @@ module LightweightAttributes
       end
     end
 
-    def read_attribute_before_type_cast(*)
+    def read_attribute_before_type_cast(attr_name)
       if LightweightAttributes::AttributeSet === @attributes
-        @attributes = self.class.attributes_builder.build_original_from_database @attributes.raw_attributes, @attributes.additional_types
+        @attributes.raw_attributes[attr_name.to_s]
+      else
+        super
       end
-
-      super
     end
 
     def attributes_before_type_cast
       if LightweightAttributes::AttributeSet === @attributes
-        @attributes = self.class.attributes_builder.build_original_from_database @attributes.raw_attributes, @attributes.additional_types
+        @attributes.raw_attributes
+      else
+        super
       end
-
-      super
     end
 
     private
