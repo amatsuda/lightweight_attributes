@@ -14,6 +14,9 @@ module LightweightAttributes
       @types = types
       @additional_types = additional_types
       @attributes = {}
+      def @attributes.delegate_hash
+        self
+      end
       @sorted = true
     end
 
