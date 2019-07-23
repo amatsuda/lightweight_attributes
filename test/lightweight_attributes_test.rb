@@ -3,6 +3,10 @@
 require "test_helper"
 
 class LightweightAttributesTest < Minitest::Test
+  class PostForInsert < ActiveRecord::Base
+    self.table_name = 'posts'
+  end
+
   def setup
     super
     Object.const_set :Post, Class.new(ActiveRecord::Base)
@@ -12,6 +16,7 @@ class LightweightAttributesTest < Minitest::Test
     super
     ActiveRecord::Base.clear_all_connections!
     Object.send :remove_const, :Post
+    PostForInsert.reset_column_information
   end
 
   def with_attributes(*attrs)
@@ -52,11 +57,7 @@ class LightweightAttributesTest < Minitest::Test
   def test_reader
     with_attributes [:title, :string], [:body, :text], [:posted_at, :datetime], [:category, :integer], [:published, :boolean] do
       now = Time.current.change(usec: 0)
-      if ENV['DB'] == 'sqlite3'
-        Post.connection.execute "insert into posts(title, body, posted_at, category, published) values ('hello', 'world', '#{now.to_s(:db)}', 123, 'true')"
-      else
-        Post.connection.execute "insert into posts(title, body, posted_at, category, published) values ('hello', 'world', '#{now.to_s(:db)}', 123, true)"
-      end
+      PostForInsert.create! title: 'hello', body: 'world', posted_at: now.to_s(:db), category: 123, published: true
 
       p = Post.last
       assert_lightweight_attributes p
@@ -70,7 +71,7 @@ class LightweightAttributesTest < Minitest::Test
 
   def test_writer
     with_attributes [:title, :string] do
-      Post.connection.execute "insert into posts(title) values ('hello')"
+      PostForInsert.create! title: 'hello'
 
       p = Post.last
       assert_lightweight_attributes p
@@ -83,7 +84,7 @@ class LightweightAttributesTest < Minitest::Test
 
   def test_dirty
     with_attributes [:title, :string] do
-      Post.connection.execute "insert into posts(title) values ('hello')"
+      PostForInsert.create! title: 'hello'
 
       p = Post.last
       assert_lightweight_attributes p
@@ -95,7 +96,7 @@ class LightweightAttributesTest < Minitest::Test
 
   def test_save
     with_attributes [:title, :string] do
-      Post.connection.execute "insert into posts(title) values ('hello')"
+      PostForInsert.create! title: 'hello'
 
       p = Post.last
       assert_lightweight_attributes p
@@ -107,7 +108,7 @@ class LightweightAttributesTest < Minitest::Test
 
   def test_came_from_user
     with_attributes [:title, :string] do
-      Post.connection.execute "insert into posts(title) values ('hello')"
+      PostForInsert.create! title: 'hello'
 
       p = Post.last
       assert_lightweight_attributes p
@@ -119,7 +120,7 @@ class LightweightAttributesTest < Minitest::Test
 
   def test_to_hash
     with_attributes [:title, :string] do
-      Post.connection.execute "insert into posts(title) values ('hello')"
+      PostForInsert.create! title: 'hello'
 
       p = Post.last
       assert_lightweight_attributes p
@@ -133,7 +134,7 @@ class LightweightAttributesTest < Minitest::Test
 
   def test_accessed_fields
     with_attributes [:title, :string] do
-      Post.connection.execute "insert into posts(title) values ('hello')"
+      PostForInsert.create! title: 'hello'
 
       p = Post.last
       assert_lightweight_attributes p
@@ -148,7 +149,7 @@ class LightweightAttributesTest < Minitest::Test
 
   def test_attributes_before_type_cast
     with_attributes [:title, :string] do
-      Post.connection.execute "insert into posts(title) values ('hello')"
+      PostForInsert.create! title: 'hello'
 
       p = Post.last
       assert_lightweight_attributes p
@@ -160,7 +161,7 @@ class LightweightAttributesTest < Minitest::Test
 
   def test_read_attribute_before_type_cast
     with_attributes [:title, :string] do
-      Post.connection.execute "insert into posts(title) values ('hello')"
+      PostForInsert.create! title: 'hello'
 
       p = Post.last
       assert_lightweight_attributes p
@@ -172,7 +173,7 @@ class LightweightAttributesTest < Minitest::Test
 
   def test_clear_changes_information
     with_attributes [:title, :string] do
-      Post.connection.execute "insert into posts(title) values ('hello')"
+      PostForInsert.create! title: 'hello'
 
       p = Post.last
       assert_lightweight_attributes p
