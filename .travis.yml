@@ -3,6 +3,7 @@ language: ruby
 dist: xenial
 
 services:
+  - postgresql
   - mysql
 
 rvm:
