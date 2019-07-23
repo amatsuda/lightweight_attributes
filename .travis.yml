@@ -2,11 +2,6 @@ language: ruby
 
 dist: xenial
 
-addons:
-  apt:
-    packages:
-      - mysql
-
 rvm:
   - 2.6.3
 
