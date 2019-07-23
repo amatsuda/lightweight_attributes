@@ -48,6 +48,10 @@ module LightweightAttributes
       sort_attributes!
     end
 
+    def reset(key)
+      @attributes[key] = nil
+    end
+
     private
 
     attr_reader :attributes
