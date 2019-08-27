@@ -52,6 +52,11 @@ module LightweightAttributes
       @attributes[key] = nil
     end
 
+    # ZOMG: This object can never be frozen!!!
+    def freeze
+      self
+    end
+
     private
 
     attr_reader :attributes
