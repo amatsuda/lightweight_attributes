@@ -82,6 +82,19 @@ class LightweightAttributesTest < Minitest::Test
     end
   end
 
+  def test_raw_writer
+    with_attributes [:title, :string] do
+      PostForInsert.create! title: 'hello'
+
+      p = Post.last
+      assert_lightweight_attributes p
+
+      p.update_columns(title: 'goodbye')
+      assert_equal 'goodbye', p.title
+      assert_not_lightweight_attributes p
+    end
+  end
+
   def test_dirty
     with_attributes [:title, :string] do
       PostForInsert.create! title: 'hello'
